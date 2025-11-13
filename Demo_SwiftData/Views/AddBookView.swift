@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddBookView: View {
     @Environment(\.modelContext) var modelContext
