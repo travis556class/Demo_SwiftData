@@ -7,11 +7,13 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct AddBookView: View {
+    @Environment(\.modelContext) var modelContext
     // MARK - Properties
     @State private var title = ""
     @State private var author = ""
     @State private var bookYear = ""
+    @State private var openAlert: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -57,17 +59,37 @@ struct ContentView: View {
                         } else {
                             book = Book(title: title, author: author, year: 0)
                         }
+                        
+                        modelContext.insert(book)
+                        
+                        guard let _ = try? modelContext.save()
+                        else {
+                            print("Failed to save the book")
+                            return
+                        }
+                        
+                        openAlert = true
+                        
                     }
+                    .font(.subheadline)
                     .bold()
                     .buttonStyle(.borderedProminent)
+                    .alert("Book Saved!", isPresented: $openAlert) {
+                        //alert behavior
+                        Button("Done", role: .cancel) {
+                            openAlert = false
+                            
+                            title = ""
+                            author = ""
+                            bookYear = ""
+                        }
+                    }
                 }
-                
-                //modelContext.insert(book)
             }
         }
     }
 }
 
 #Preview {
-    ContentView()
+    AddBookView()
 }

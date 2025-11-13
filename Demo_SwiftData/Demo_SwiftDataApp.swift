@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Demo_SwiftDataApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AddBookView()
         }
+        .modelContainer(for: Book.self)
+    }
+    init() {
+        print(URL.applicationDirectory.path(percentEncoded: false))
     }
 }
